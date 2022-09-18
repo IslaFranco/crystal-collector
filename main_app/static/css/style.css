@@ -1,0 +1,20 @@
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: rgb(244, 198, 238);
+ }
+ 
+ .nav-wrapper {
+     padding-left: 1rem;
+ }
+ 
+ main {
+     flex-grow: 1;
+ }
+ 
+ footer {
+     padding-top: 0;
+     text-align: right;
+ }
