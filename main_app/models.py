@@ -3,6 +3,13 @@ from django.urls import reverse
 
 # Create your models here.
 
+METHODS = (
+    ('S', 'Sunlight'),
+    ('M', 'Moonlight'),
+    ('W', 'Water'),
+    ('I', 'Incense',)
+)
+
 class Crystal(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=800)
@@ -16,6 +23,21 @@ class Crystal(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'crystal_id': self.id})
+
+class Cleanse(models.Model):   
+    date = models.DateField('Cleansing Date')
+    method = models.CharField(
+        max_length=1, 
+        choices=METHODS,
+         default='M'
+         )
+
+    crystal = models.ForeignKey(Crystal, on_delete=models.CASCADE)  
+
+    def __str__(self):
+        return f'{self.get_method_display()} on {self.date}'   
+        # Moonlight on 09-23-2022  
+
 
 
 #Anytime you mkae changes to our models, we need to make migrations to represent your data to your database
