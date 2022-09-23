@@ -36,7 +36,18 @@ class Cleanse(models.Model):
 
     def __str__(self):
         return f'{self.get_method_display()} on {self.date}'   
-        # Moonlight on 09-23-2022  
+        # Moonlight on 09-23-2022 
+        # 
+
+class Blog(models.Model):
+    name = models.CharField(max_length=100)
+    content = models.TextField(max_length=5000) 
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('blog_detail', kwargs={'blog_id': self.id})    
 
 
 

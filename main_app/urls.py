@@ -10,5 +10,10 @@ urlpatterns = [
     path('crystals/<int:pk>/update/', views.CrystalUpdate.as_view(), name='crystal_update'),
     path('crystals/<int:pk>/delete/', views.CrystalDelete.as_view(), name='crystal_delete'),
     path('crystals/<int:crystal_id>/add_cleanse/', views.add_cleanse, name='add_cleanse'),
+    path('blogs/', views.blogs_index, name='blog_index'),
+    path('blogs/<int:blog_id>/', views.blogs_detail, name='blog_detail'),
+    path('blogs/create/', views.BlogCreate.as_view(), name='blog_create'),
+    path('blogs/<int:pk>/update/', views.BlogUpdate.as_view(), name='blog_update'),
+    path('blogs/<int:pk>/delete/', views.BlogDelete.as_view(), name='blog_delete'),
 ]
 # DEfining view funcitons

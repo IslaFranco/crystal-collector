@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Crystal
+from .models import Blog
 from .forms import CleanseForm
 
 # Create your views here.
@@ -42,5 +43,25 @@ class CrystalUpdate(UpdateView):
 
 class CrystalDelete(DeleteView):
     model = Crystal
-    success_url = '/crystals/'    
+    success_url = '/crystals/'  
+
+def blogs_index(request):
+    blogs = Blog.objects.all()
+    return render(request, 'blogs/index.html', {'blogs': blogs })
+
+def blogs_detail(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+    return render(request, 'blogs/detail.html', {'blog':blog })
+
+class BlogCreate(CreateView):
+    model = Blog
+    fields = '__all__' 
+
+class BlogUpdate(UpdateView):
+    model = Blog
+    fields = ('content',)    
+
+class BlogDelete(DeleteView):
+    model = Blog
+    success_url = '/blogs/'               
 
