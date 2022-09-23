@@ -4,7 +4,9 @@
 <h1>Add New Crystal</h1>
 <form action="" method="POST">
     {% csrf_token %}
-    {{ form }}
+    <table>
+        {{ form.as_table }}
+    </table>
     <input class="btn green" type="submit" value="Add Crystal">
 </form>
 

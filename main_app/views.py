@@ -20,5 +20,5 @@ def crystals_detail(request, crystal_id):
 class CrystalCreate(CreateView):
     model = Crystal
     fields = '__all__'  
-    success_url = '/crystals/'  
+    # success_url = '/crystals/'  
 
