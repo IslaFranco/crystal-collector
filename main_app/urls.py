@@ -9,5 +9,6 @@ urlpatterns = [
     path('crystals/create/', views.CrystalCreate.as_view(), name='crystal_create'),
     path('crystals/<int:pk>/update/', views.CrystalUpdate.as_view(), name='crystal_update'),
     path('crystals/<int:pk>/delete/', views.CrystalDelete.as_view(), name='crystal_delete'),
+    path('crystals/<int:crystal_id>/add_cleanse/', views.add_cleanse, name='add_cleanse'),
 ]
 # DEfining view funcitons

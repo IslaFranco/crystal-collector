@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Crystal
+from .forms import CleanseForm
 
 # Create your views here.
 def home(request):
@@ -15,7 +16,20 @@ def crystals_index(request):
 
 def crystals_detail(request, crystal_id):
     crystal = Crystal.objects.get(id=crystal_id)
-    return render(request, 'crystals/detail.html', {'crystal': crystal})
+    cleanse_form = CleanseForm()
+    return render(request, 'crystals/detail.html', {
+        'crystal': crystal,
+        'cleanse_form': cleanse_form
+        })
+
+def add_cleanse(request, crystal_id):
+    form = CleanseForm(request.POST) 
+
+    if form.is_valid():
+      new_cleanse = form.save(commit=False)      
+      new_cleanse.crystal_id = crystal_id
+      new_cleanse.save()
+    return redirect('detail', crystal_id=crystal_id) 
 
 class CrystalCreate(CreateView):
     model = Crystal

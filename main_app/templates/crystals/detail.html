@@ -21,6 +21,12 @@
         </div>
     </div>
     <div class="col s6">
+        <form action="{% url 'add_cleanse' crystal.id %}" method="POST">
+            {% csrf_token %}
+
+            {{ cleanse_form.as_p }}
+            <input class="btn" type="submit" value="Add Cleansing">
+        </form>
         <table class="striped">
             <thead>
                 <tr>
@@ -39,6 +45,19 @@
         </table>
     </div>
 </div>
+<script>
+    const dateEl = document.getElementById('id_date');
+    const selectEl = document.getElementById('id_method');
+    M.Datepicker.init(dateEl, {
+        format: 'yyyy-mm-dd',
+        defaultDate: new Date(),
+        setDefaultDate: true,
+        autoClose: true
+    });
+
+    M.FormSelect.init(selectEl);
+
+</script>
 
 
 
