@@ -12,6 +12,10 @@
             <p>Zodiac: {{ crystal.zodiac }}</p>
             <p>Color: {{ crystal.color }}</p>
         </div>
+        <div class="card-action">
+            <a href="{% url 'crystal_update' crystal.id %}">Edit</a>
+            <a href="{% url 'crystal_delete' crystal.id %}">Delete</a>
+        </div>
     </div>
 
 
