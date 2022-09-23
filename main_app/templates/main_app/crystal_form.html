@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Add New Crystal</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input class="btn green" type="submit" value="Add Crystal">
+</form>
+
+{% endblock %}
