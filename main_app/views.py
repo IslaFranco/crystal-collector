@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.forms import UserCreationForm 
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Crystal
 from .models import Blog
 from .forms import CleanseForm
@@ -11,10 +15,12 @@ def home(request):
 def about(request):
     return render(request, 'about.html')       
 
+@login_required
 def crystals_index(request):
-    crystals = Crystal.objects.all()
+    crystals = Crystal.objects.filter(user=request.user)
     return render(request, 'crystals/index.html', { 'crystals': crystals })
 
+@login_required
 def crystals_detail(request, crystal_id):
     crystal = Crystal.objects.get(id=crystal_id)
     cleanse_form = CleanseForm()
@@ -24,7 +30,7 @@ def crystals_detail(request, crystal_id):
         'cleanse_form': cleanse_form,
         'blogs': blogs_crystal_doesnt_have
         })
-
+@login_required
 def add_cleanse(request, crystal_id):
     form = CleanseForm(request.POST) 
 
@@ -34,24 +40,43 @@ def add_cleanse(request, crystal_id):
       new_cleanse.save()
     return redirect('detail', crystal_id=crystal_id) 
 
+@login_required
 def assoc_blog(request, crystal_id, blog_id):
     Crystal.objects.get(id=crystal_id).blogs.add(blog_id)  
     return redirect('detail', crystal_id=crystal_id)  
 
 def unassoc_blog(request, crystal_id, blog_id):
     Crystal.objects.get(id=crystal_id).blogs.remove(blog_id)  
-    return redirect('detail', crystal_id=crystal_id)     
+    return redirect('detail', crystal_id=crystal_id) 
 
-class CrystalCreate(CreateView):
+def signup(request):
+    form = UserCreationForm()
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Invalid response'
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'registration/signup.html', context)          
+
+class CrystalCreate(LoginRequiredMixin, CreateView):
     model = Crystal
-    fields = ('name', 'description', 'properties', 'chakras', 'zodiac', 'color',)  
+    fields = ('name', 'description', 'properties', 'chakras', 'zodiac', 'color',) 
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form) 
     # success_url = '/crystals/'  
 
-class CrystalUpdate(UpdateView):
+class CrystalUpdate(LoginRequiredMixin, UpdateView):
     model = Crystal
     fields = ('description', 'properties', 'chakras', 'zodiac', 'color') 
 
-class CrystalDelete(DeleteView):
+class CrystalDelete(LoginRequiredMixin, DeleteView):
     model = Crystal
     success_url = '/crystals/'  
 
@@ -63,15 +88,15 @@ def blogs_detail(request, blog_id):
     blog = Blog.objects.get(id=blog_id)
     return render(request, 'blogs/detail.html', {'blog':blog })
 
-class BlogCreate(CreateView):
+class BlogCreate(LoginRequiredMixin, CreateView):
     model = Blog
     fields = '__all__' 
 
-class BlogUpdate(UpdateView):
+class BlogUpdate(LoginRequiredMixin, UpdateView):
     model = Blog
     fields = ('content',)    
 
-class BlogDelete(DeleteView):
+class BlogDelete(LoginRequiredMixin, DeleteView):
     model = Blog
     success_url = '/blogs/'               
 
