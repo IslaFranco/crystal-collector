@@ -38,6 +38,10 @@ def assoc_blog(request, crystal_id, blog_id):
     Crystal.objects.get(id=crystal_id).blogs.add(blog_id)  
     return redirect('detail', crystal_id=crystal_id)  
 
+def unassoc_blog(request, crystal_id, blog_id):
+    Crystal.objects.get(id=crystal_id).blogs.remove(blog_id)  
+    return redirect('detail', crystal_id=crystal_id)     
+
 class CrystalCreate(CreateView):
     model = Crystal
     fields = ('name', 'description', 'properties', 'chakras', 'zodiac', 'color',)  

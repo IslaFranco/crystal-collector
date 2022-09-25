@@ -58,6 +58,12 @@
                         {{ blog.name }}
                     </span>
                 </div>
+                <div class="card-action">
+                    <form action="{% url 'unassoc_blog' crystal.id blog.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete" class="btn red">
+                    </form>
+                </div>
             </div>
             {% endfor %}
 
