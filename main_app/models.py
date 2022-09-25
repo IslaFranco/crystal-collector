@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -10,6 +11,16 @@ METHODS = (
     ('I', 'Incense',)
 )
 
+class Blog(models.Model):
+    name = models.CharField(max_length=100)
+    content = models.TextField(max_length=5000) 
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('blog_detail', kwargs={'blog_id': self.id})
+
 class Crystal(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=800)
@@ -17,6 +28,8 @@ class Crystal(models.Model):
     chakras = models.CharField(max_length=100)
     zodiac = models.CharField(max_length=100)
     color = models.CharField(max_length=100)
+    blogs = models.ManyToManyField(Blog)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -37,17 +50,7 @@ class Cleanse(models.Model):
     def __str__(self):
         return f'{self.get_method_display()} on {self.date}'   
         # Moonlight on 09-23-2022 
-        # 
-
-class Blog(models.Model):
-    name = models.CharField(max_length=100)
-    content = models.TextField(max_length=5000) 
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('blog_detail', kwargs={'blog_id': self.id})    
+        #     
 
 
 

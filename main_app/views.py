@@ -18,9 +18,11 @@ def crystals_index(request):
 def crystals_detail(request, crystal_id):
     crystal = Crystal.objects.get(id=crystal_id)
     cleanse_form = CleanseForm()
+    blogs_crystal_doesnt_have = Blog.objects.exclude(id__in = crystal.blogs.all().values_list('id'))
     return render(request, 'crystals/detail.html', {
         'crystal': crystal,
-        'cleanse_form': cleanse_form
+        'cleanse_form': cleanse_form,
+        'blogs': blogs_crystal_doesnt_have
         })
 
 def add_cleanse(request, crystal_id):
@@ -32,9 +34,13 @@ def add_cleanse(request, crystal_id):
       new_cleanse.save()
     return redirect('detail', crystal_id=crystal_id) 
 
+def assoc_blog(request, crystal_id, blog_id):
+    Crystal.objects.get(id=crystal_id).blogs.add(blog_id)  
+    return redirect('detail', crystal_id=crystal_id)  
+
 class CrystalCreate(CreateView):
     model = Crystal
-    fields = '__all__'  
+    fields = ('name', 'description', 'properties', 'chakras', 'zodiac', 'color',)  
     # success_url = '/crystals/'  
 
 class CrystalUpdate(UpdateView):

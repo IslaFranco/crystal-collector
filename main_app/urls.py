@@ -15,5 +15,6 @@ urlpatterns = [
     path('blogs/create/', views.BlogCreate.as_view(), name='blog_create'),
     path('blogs/<int:pk>/update/', views.BlogUpdate.as_view(), name='blog_update'),
     path('blogs/<int:pk>/delete/', views.BlogDelete.as_view(), name='blog_delete'),
+    path('crystals/<int:crystal_id>/assoc_blog/<int:blog_id>/', views.assoc_blog, name='assoc_blog'),
 ]
 # DEfining view funcitons
